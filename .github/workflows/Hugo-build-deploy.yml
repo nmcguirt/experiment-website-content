@@ -47,4 +47,8 @@ jobs:
             --gc \
             --minify
       - name: Deploy to GCS
-        run: gcloud storage rsync --recursive $GITHUB_WORKSPACE/public/ gs://${{ vars.BUCKET }}/
+        run: |
+          gcloud storage rsync \
+          --recursive \
+          --checksums-only \
+          $GITHUB_WORKSPACE/public/ gs://${{ vars.BUCKET }}/
