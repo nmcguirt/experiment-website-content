@@ -22,6 +22,8 @@ jobs:
           workload_identity_provider: 'projects/641246862184/locations/global/workloadIdentityPools/github/providers/nmcguirt-github'
       - uses: docker://ghcr.io/gohugoio/hugo:v0.139.3
         name: Hugo Build
+        with:
+          args: "--minify"
 
 
 
