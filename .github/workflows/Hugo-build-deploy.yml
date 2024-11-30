@@ -26,6 +26,8 @@ jobs:
       #     args: "--minify"
       - name: Create Docker volume
         run: /usr/bin/docker volume create project
+      - name: List files in workspace
+        run: ls -l $GITHUB_WORKSPACE
       - name: Copy data into volume
         run: |
           /usr/bin/docker run --rm -v $GITHUB_WORKSPACE:/src -v project:/data busybox cp -r /src/* /data
