@@ -24,20 +24,20 @@ jobs:
           && sudo dpkg -i ${{ runner.temp }}/hugo.deb    
       - name: Install Dart Sass
         run: sudo snap install dart-sass
-      - name: 'Install Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v2'
-        with:
-          version: '>= 363.0.0'
-      - name: GCP auth
-        uses: google-github-actions/auth@v2
-        with:
-          service_account: 'github-actions@github-exploration-442503.iam.gserviceaccount.com'
-          workload_identity_provider: 'projects/641246862184/locations/global/workloadIdentityPools/github/providers/nmcguirt-github'
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
+      - name: GCP auth
+        uses: google-github-actions/auth@v2
+        with:
+          service_account: 'github-actions@github-exploration-442503.iam.gserviceaccount.com'
+          workload_identity_provider: 'projects/641246862184/locations/global/workloadIdentityPools/github/providers/nmcguirt-github'
+      - name: 'Install Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          version: '>= 363.0.0'
       - name: Hugo build
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
