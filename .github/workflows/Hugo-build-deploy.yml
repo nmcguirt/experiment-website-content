@@ -28,7 +28,7 @@ jobs:
         run: |
           /usr/bin/docker run \
           -v "$(pwd):/project" \
-          docker://ghcr.io/gohugoio/hugo:v0.139.3 \
+          ghcr.io/gohugoio/hugo:v0.139.3 \
           "--minify"
 
 
