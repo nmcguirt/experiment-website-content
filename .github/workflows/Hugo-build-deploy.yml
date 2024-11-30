@@ -13,6 +13,8 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
+    environment:
+      name: production
       
     steps:
       - name: Install Hugo
@@ -22,16 +24,13 @@ jobs:
         with:
           service_account: 'github-actions@github-exploration-442503.iam.gserviceaccount.com'
           workload_identity_provider: 'projects/641246862184/locations/global/workloadIdentityPools/github/providers/nmcguirt-github'
+      - name: Debug - Hugo Help
+        run: hugo --help
+      - name: Debug - Show files
+        run: find $GITHUB_WORKSPACE
       - name: Hugo build
-        run: hugo -s $GITHUB_WORKSPACE --minify
+        run: hugo -s $GITHUB_WORKSPACE --config hugo.yaml
       - name: Debug - Show files
         run: find $GITHUB_WORKSPACE
       - name: Deploy to GCS
-        run: gcloud storage rsync --recursive $GITHUB_WORKSPACE/public/ ${{vars.prod_bucket}} --dryrun
-
-
-      
-
-
-
-
+        run: gcloud storage rsync --recursive $GITHUB_WORKSPACE/public/ ${{ vars.BUCKET }} --dryrun
