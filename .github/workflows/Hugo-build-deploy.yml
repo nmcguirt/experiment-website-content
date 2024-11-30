@@ -28,8 +28,14 @@ jobs:
         run: hugo --help
       - name: Debug - Show files
         run: find $GITHUB_WORKSPACE
+      - name: Debug - Hugo config
+        run: hugo -s $GITHUB_WORKSPACE --config hugo.yaml config
       - name: Hugo build
-        run: hugo -s $GITHUB_WORKSPACE --config hugo.yaml
+        run: |
+          hugo -s $GITHUB_WORKSPACE \
+          --config hugo.yaml \
+          --contentDir $GITHUB_WORKSPACE/content
+          --themesDir $GITHUB_WORKSPACE/themes
       - name: Debug - Show files
         run: find $GITHUB_WORKSPACE
       - name: Deploy to GCS
