@@ -29,6 +29,8 @@ jobs:
       - name: Copy data into volume
         run: |
           /usr/bin/docker run --rm -v `pwd`:/src -v project:/data busybox cp -r /src /data
+      - name: List files in Docker volume
+        run: /usr/bin/docker run --rm -v project:/data busybox ls -l /data
       - name: Hugo Container Run
         run: |
           /usr/bin/docker run \
