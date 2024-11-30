@@ -20,10 +20,18 @@ jobs:
         with:
           service_account: 'github-actions@github-exploration-442503.iam.gserviceaccount.com'
           workload_identity_provider: 'projects/641246862184/locations/global/workloadIdentityPools/github/providers/nmcguirt-github'
-      - uses: docker://ghcr.io/gohugoio/hugo:v0.139.3
-        name: Hugo Build
-        with:
-          args: "--minify"
+      # - uses: docker://ghcr.io/gohugoio/hugo:v0.139.3
+      #   name: Hugo Build
+      #   with:
+      #     args: "--minify"
+      - name: Hugo Container Run
+        run: |
+          /usr/bin/docker run \
+          --mount .:/project --rm \
+          docker://ghcr.io/gohugoio/hugo:v0.139.3 \
+          "--minify"
+
+
 
 
 
