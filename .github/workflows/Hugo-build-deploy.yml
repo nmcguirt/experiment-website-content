@@ -29,17 +29,12 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: google-github-actions/auth@v2
+      - name: GCP auth
+        uses: google-github-actions/auth@v2
         with:
           service_account: 'github-actions@github-exploration-442503.iam.gserviceaccount.com'
           workload_identity_provider: 'projects/641246862184/locations/global/workloadIdentityPools/github/providers/nmcguirt-github'
-      - name: Debug - Hugo Help
-        run: hugo --help
-      - name: Debug - Show files
-        run: find $GITHUB_WORKSPACE
-      - name: Debug - Hugo config
-        run: hugo -s $GITHUB_WORKSPACE --config hugo.yaml config
-      - name: Hugo Build
+      - name: Hugo build
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
           HUGO_ENVIRONMENT: production
@@ -47,7 +42,5 @@ jobs:
           hugo \
             --gc \
             --minify
-      - name: Debug - Show files
-        run: find $GITHUB_WORKSPACE
       - name: Deploy to GCS
-        run: gcloud storage rsync --recursive $GITHUB_WORKSPACE/public/ ${{ vars.BUCKET }} --dryrun
+        run: gcloud storage rsync --recursive $GITHUB_WORKSPACE/public/ ${{ vars.BUCKET }} --dry-run
