@@ -24,13 +24,18 @@ jobs:
       #   name: Hugo Build
       #   with:
       #     args: "--minify"
+      - name: Create Docker volume
+        run: /usr/bin/docker volume create project
+      - name: Copy data into volume
+        run: |
+          /usr/bin/docker run --rm -v `pwd`:/src -v project:/data busybox cp -r /src /data
       - name: Hugo Container Run
         run: |
           /usr/bin/docker run \
-          -v "$(pwd):/project" \
+          -v project:/project \
           ghcr.io/gohugoio/hugo:v0.139.3 \
           "--minify"
-
+      
 
 
 
