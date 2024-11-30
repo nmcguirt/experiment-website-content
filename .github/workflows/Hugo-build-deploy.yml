@@ -15,30 +15,19 @@ jobs:
       id-token: 'write'
       
     steps:
+      - name: Install Hugo
+        run: sudo apt install -y hugo
       - uses: actions/checkout@v4
       - uses: google-github-actions/auth@v2
         with:
           service_account: 'github-actions@github-exploration-442503.iam.gserviceaccount.com'
           workload_identity_provider: 'projects/641246862184/locations/global/workloadIdentityPools/github/providers/nmcguirt-github'
-      # - uses: docker://ghcr.io/gohugoio/hugo:v0.139.3
-      #   name: Hugo Build
-      #   with:
-      #     args: "--minify"
-      - name: Create Docker volume
-        run: /usr/bin/docker volume create project
-      - name: List files in workspace
-        run: ls -l $GITHUB_WORKSPACE
-      - name: Copy data into volume
-        run: |
-          /usr/bin/docker run --rm -v $GITHUB_WORKSPACE:/src -v project:/data busybox cp -r /src/* /data
-      - name: List files in Docker volume
-        run: /usr/bin/docker run --rm -v project:/data busybox find /data
-      - name: Hugo Container Run
-        run: |
-          /usr/bin/docker run \
-          -v project:/project \
-          ghcr.io/gohugoio/hugo:v0.139.3 \
-          "--minify"
+      - name: Hugo build
+        run: hugo --minify
+      - name: Deploy to GCS
+        run: gcloud storage rsync --recursive $GITHUB_WORKSPACE/public/ ${{vars.prod_bucket}} --dryrun
+
+
       
 
 
