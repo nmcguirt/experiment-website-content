@@ -23,7 +23,9 @@ jobs:
           service_account: 'github-actions@github-exploration-442503.iam.gserviceaccount.com'
           workload_identity_provider: 'projects/641246862184/locations/global/workloadIdentityPools/github/providers/nmcguirt-github'
       - name: Hugo build
-        run: hugo --minify
+        run: hugo build -s $GITHUB_WORKSPACE --minify
+      - name: Debug - Show files
+        run: find $GITHUB_WORKSPACE
       - name: Deploy to GCS
         run: gcloud storage rsync --recursive $GITHUB_WORKSPACE/public/ ${{vars.prod_bucket}} --dryrun
 
